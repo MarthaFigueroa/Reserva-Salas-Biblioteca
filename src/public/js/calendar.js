@@ -19,10 +19,6 @@ let months = [
   "Dec"
 ];
 
-// let horas = ["7:00","8:00","9:00","10:00","11:00","12:00",
-//         "13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
-
-
 let horas = ["7:00","7:30","8:00","8:30","9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00",
         "13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00"];
 
@@ -57,18 +53,18 @@ function showCalendar(month, year) {
     // clearing all previous cells
     tbl.innerHTML = "";
 
-    // filing data about month and in the page via DOM.
+    // filing data about month and year in the page
     monthAndYear.innerHTML = months[month] + " " + year;
     selectYear.value = year;
     selectMonth.value = month;
 
-    // creating all cells
+    // creating all cells of the calendar
     let date = 1;
     for (let i = 0; i < 6; i++) {
-        // creates a table row
+        // Creation of the table row
         let row = document.createElement("tr");
 
-        //creating individual cells, filing them up with data.
+        //Creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
             if (i === 0 && j < firstDay) {
                 let cell = document.createElement("td");
@@ -79,7 +75,6 @@ function showCalendar(month, year) {
             else if (date > daysInMonth) {
                 break;
             }
-
             else {
                 let cell = document.createElement("td");
                 cell.setAttribute("class", "day");
@@ -87,12 +82,12 @@ function showCalendar(month, year) {
                 cell.setAttribute("data-target", "#exampleModal");
                 
                 let cellText = document.createTextNode(date);
+                // today's date color
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                     cell.classList.add("bg-info");
-                } // color today's date
+                } 
                 cell.style.cursor="pointer";
                 cell.value = months[month]+" "+date+","+year;
-                
                 
                 cell.appendChild(cellText);
                 row.appendChild(cell);
@@ -101,7 +96,7 @@ function showCalendar(month, year) {
                 date++;
             }
         }
-        tbl.appendChild(row); // appending each row into calendar body.
+        tbl.appendChild(row); // appending each row into calendar table body.
     }
 
     function changeTitle(cell){
@@ -123,7 +118,7 @@ function showCalendar(month, year) {
     }
 }
 
-//Clear old table before create the new one.
+//Clear old table before creating the new one.
 function clearTimeTable(){
     for (hora in horas) {
         document.getElementById(horas[hora]).remove();
@@ -163,7 +158,6 @@ function timeTable(buttonDate){
         };
         
         for(hora in disponibilidad){
-            // let head = 
             let row = document.getElementById(hora);
             let cell = document.createElement("td");
             let textoCell = document.createTextNode('');
@@ -174,17 +168,14 @@ function timeTable(buttonDate){
             let text = document.createTextNode(disponible)
             cell.appendChild(text);
             row.appendChild(cell);
-            // console.log(cell.id);
         }
 
         fetchData(room, buttonDate, buttonDate, function(data) {
             
             console.log("ROOM ",room, data);
-            // console.log("Data Disponibilidad: ", data.disponibilidad);
             console.log("Disponibilidad: ", disponibilidad);
 
             for(reserva of data.disponibilidad) {
-                // console.log("Reserva: ", reserva);
                 disponibilidad = Disponibilidad(reserva, disponibilidad);
             }
             
@@ -194,7 +185,7 @@ function timeTable(buttonDate){
                 displayDisponibilidad(disponibilidad,data.disponibilidad[0].room_id);
                 
             }
-        });  //data= responseData, the value that fetchData returns.
+        }); 
     }
 }
 function Disponibilidad(reserva, json){
@@ -205,8 +196,7 @@ function Disponibilidad(reserva, json){
     console.log("Json: ", json);
 
     for(let item in json){
-        itemTime = item.split(':');  //Elimina los ':'
-
+        itemTime = item.split(':'); 
         if(parseInt(itemTime[0])>=parseInt(startTime[0]) && parseInt(itemTime[0])<parseInt(endTime[0])){  //Compare the itemTime(Hour: Position 0) with the startTime and endTime 
             if(parseInt(itemTime[0])==parseInt(startTime[0]) && parseInt(itemTime[1])>=parseInt(startTime[1])) json[item] = false;  //Compare the itemHour(Position 0) with the startTime and itemMinute(Position 1) and hours
             else if (parseInt(itemTime[0])!=parseInt(startTime[0])) json[item] = false
@@ -220,29 +210,20 @@ function Disponibilidad(reserva, json){
 
 function displayDisponibilidad(disponibilidad, room){
         for(hora in disponibilidad){
-            // let cell = document.createElement("td");
             let cell = document.getElementById(room+"_"+hora);
-            // let text = document.createTextNode('');
             let disponible;
             if(disponibilidad[hora]){
                 disponible = "Disponible";
-                // cell.value = disponible;
                 cell.classList.add("disponible");
             }
             else{
                 disponible = "Ocupado";
-                // cell.value = disponible;
                 cell.classList.add("ocupada");
             }
-            // text = document.createTextNode('');  
-            // let text = document.createTextNode(disponible)
-            // cell.appendChild(text);
             cell.innerHTML = disponible;
-            // cell.removeChild(text);
         }
 
         room=true;
-    // }
     
 }
 
@@ -258,7 +239,6 @@ function signOut() {
 
 function fetchData(room, startTime, endTime, onData){ 
     const myToken = sessionStorage.getItem("token");
-    // console.log("my token: ", myToken);
 
     startTime = new Date(startTime).toDateString("yyyyMMdd");
     endTime = new Date(endTime).toDateString("yyyyMMdd");
@@ -297,17 +277,12 @@ function fetchData(room, startTime, endTime, onData){
             document.getElementById('no_reserva').click();
             document.getElementById("modal-content").innerHTML = `
             SU SESIÓN HA EXPIRADO, VUELVA A INICIAR SESIÓN.`;
-            // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
 
             setTimeout(function(){ 
 		signOut();
-               // window.location.href = '/';//login.html
             }, 10000);
           }
         onData(data);
-        // if(data.message == "undefined"){
-        //     window.location.href("/login.html");
-        // }
     })
     .catch(function(err) {
         let disponibilidad = {

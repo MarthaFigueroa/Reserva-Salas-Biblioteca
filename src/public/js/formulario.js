@@ -123,7 +123,6 @@ const app = new Vue({
             <br>
             POR FAVOR VUELVA A INTENTAR INGRESANDO UNA HORA VÁLIDA.`;
             document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
-            // alert("You have entered an invalid hour!"); // document.form1.email.focus();
           }
         }
         else{
@@ -133,34 +132,13 @@ const app = new Vue({
           <br>
           POR FAVOR VUELVA A INTENTAR INGRESANDO UNA DIRECCIÓN DE CORREO VÁLIDA.`;
           document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
-          // alert("You have entered an invalid email address!"); // document.form1.email.focus();
         }
       },
       value(){
         var fechaInicio = document.getElementById('fechaIni').value;
         var horaInicio = document.getElementById('horaIni').value;
-        // let horaInicio = new Date(hora);
-       
-        // horaInicio = horaInicio.setTime(horaInicio.getTime() + (1*60*60*1000));
-        // console.log((horaInicio.getHours()-1));
-        
         var fecha1 = new Date(fechaInicio+' '+horaInicio);
-        // var fecha = (d.getTime()-d.getMilliseconds())/1000;
-        // console.log(fecha1);
-        
-          // var d = new Date(fecha1),
-          //     month = '' + (d.getMonth() + 1),
-          //     day = '' + d.getDate(),
-          //     year = d.getFullYear();
-      
-          // if (month.length < 2) month = '0' + month;
-          // if (day.length < 2) day = '0' + day;
-      
-          // fecha1=  [year, month, day].join('-');
-      
-          console.log(fecha1);
-          
-
+        console.log(fecha1);  
         sessionStorage.setItem("inicio",fecha1);
 
       },
@@ -168,34 +146,17 @@ const app = new Vue({
         var fechaFin = document.getElementById('fechaIni').value;
         var horaFin = document.getElementById('horaFin').value;
         var fecha2 = new Date(fechaFin+' '+horaFin);
-        // var fecha = (d.getTime()-d.getMilliseconds())/1000;
-        // console.log(fecha);
-        // console.log(d.toUTCString());
-        // console.log(fecha2.toLocaleDateString("en-US").replace("/", "-"));
-        let end_time = new Date (fecha2).getTime()/1000.0;
-        
+        let end_time = new Date (fecha2).getTime()/1000.0;        
         console.log("Fecha: "+new Date (end_time*1000).toLocaleString());
-        
-
-        // let d = fecha2.toDateString();
-
-        // const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
-        // const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
-        // const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
-
-        // console.log(ye+"-"+mo+"-"+da)
-
         sessionStorage.setItem("fin",fecha2);
         return fecha2;
       },
       valueRoom(){
-        
         var room = document.getElementById('room');
         var value = room[room.selectedIndex].value;
         console.log(value);
       },
       valueUsr(){
-        
         var createBy = document.getElementById('usr').value;
         console.log("Usr: "+createBy);
         
@@ -203,12 +164,10 @@ const app = new Vue({
         console.log("reserva: "+asunto);
       },
       valueAsunto(){
-        
         var asunto = document.getElementById('reserva').value;
         console.log("reserva: "+asunto);
       },
       valueDescription(){
-        
         var asunto = document.getElementById('descripcion').value;
         console.log("descripcion: "+asunto);
       },
@@ -235,28 +194,22 @@ const app = new Vue({
             console.log(token);
             sessionStorage.setItem("token",token);
             window.location.href = '/formulario.html';
-            //this.requestData(token);
         })
         .catch(function(err) {
             console.error(err);
         });
       },
       ValidateEmail(){
-        // var mail = document.getElementById("emailPart").value;
-        // console.log(mail);
-        
         var inputvalue = document.getElementById("descripcion").value;
         var mailformat = /^\w+([\.-]?\w+)*@alumnos.uneatlantico.es/;
         var mailformat2 = /^\w+([\.-]?\w+)*@profesores.uneatlantico.es/;
         if(inputvalue.match(mailformat) ||inputvalue.match(mailformat2)){
             console.log("Correct!");
             
-            // document.form1.email.focus();
             return true;
         }
         else{
             alert("You have entered an invalid email address!");
-            // document.form1.email.focus();
             return false;
         }
       },
@@ -267,28 +220,12 @@ const app = new Vue({
         });
       },
       deleteReserva(e){
-
-        // let id = sessionStorage.getItem("id_reserva");
-        // const myToken = sessionStorage.getItem("token");
-        // console.log("my token GG ", myToken);
-
-        // let id = this.getId()["id"];
-        // let usr = this.getId()["usuario"];
-
-        // let id = urlParams.get('id');
-        // let usr = urlParams.get('usuario');
-
-        // this.token();
-
         let all = location.search.split('id=')[1];
         let id = all.split('&')[0];
         let usr = all.split('usuario=')[1];
-
-        // const myToken = sessionStorage.getItem("token");
-        // console.log(myToken);
-
         console.log("id: ",id);
         console.log("usr: ",usr);
+
         // localhost:3000
         let url2 = `https://bibliotecareservas.uneatlantico.es/links/eliminar_reserva/${id}/${usr}`;// 
 
@@ -308,41 +245,17 @@ const app = new Vue({
           }).then((data) => {
             console.log("data ",data);
             if(data.message == "Reserva eliminada"){
-            // alert("YA SE HA REALIZADO UNA RESERVA DIARIA");
             document.getElementById('no_reserva2').click();
           }
-          // window.location.href = '/login.html';
           
         })
         .catch(function(err) {
         console.error(err);
         })
-      },
-      getId(){
-        let vars = {}; 
-        let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) { 
-          vars[key] = value; 
-        });
-        return vars; 
-      },
-      login() {
-          const { username, password } = this
-          this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
-            this.$router.push('/')
-          })
-      },
-      availability(e){
-        this.preventDef(e);
       }
-
     },
     mounted() {
       if(localStorage.token) this.token = localStorage.token;
-    },
-    beforeMount(){
-      // if(token == null){
-      //   window.location.href = "/login.html"
-      // }
     },
     watch:{
       token(newToken) {
