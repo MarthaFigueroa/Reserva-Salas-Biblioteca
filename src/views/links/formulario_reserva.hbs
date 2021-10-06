@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<meta http-equiv="refresh" content="2"/>-->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Reservar sala</title>
+  <meta name="google-signin-client_id" content="795346938454-jaajfk54bjvol2tadnsgl2f503c2mcvp.apps.googleusercontent.com">
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+ <!-- <link rel="shortcut icon" href="#" />-->
+  <link rel="icon" href="data:,">
+   <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bgForm">
+    
+  <div id="app" class="container page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div :class="['p-5', 'bg-light','my-5', 'form']" class="wrapper wrapper--w780 card">
+      <div class="container text-center" id="alertCont" style="border: none !important; box-shadow: none !important;"></div>  
+      <div class="font-poppins">
+        <div>
+          <a href="/logout" style="float: right;">Sign out</a>
+          <div class="card-3">
+            <div class="card-body">
+              
+              <div class="col-md-12 mt-4 pb-3 pt-3">
+                <div class="imgcontainer mb-4 mx-auto text-center">
+                  <img src="./img/UNEAT.jpg" alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar mx-auto text-center">
+                </div>
+                <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
+              </div>
+
+              <div class="form-row">            
+                  <h5 style="font-weight: bold; margin-bottom: 3%;">Consulta la disponibilidad antes de hacer la reserva</h5>
+              </div>
+
+              <div class="card">
+                <h3 class="card-header" id="monthAndYear">Month and Year</h3>
+
+                <form class="form-inline col-md-10 mt-3 mx-auto">
+                  <label class="lead mr-4 ml-4" for="month" style="vertical-align: middle;"></label>
+                  <select class="form-control col-sm-4 mr-2 mb-3" name="month" id="month" onchange="jump()">
+                      <option value=0>Enero</option>
+                      <option value=1>Febrero</option>
+                      <option value=2>Marzo</option>
+                      <option value=3>Abril</option>
+                      <option value=4>Mayo</option>
+                      <option value=5>Junio</option>
+                      <option value=6>Julio</option>
+                      <option value=7>Agosto</option>
+                      <option value=8>Septiembre</option>
+                      <option value=9>Octubre</option>
+                      <option value=10>Noviembre</option>
+                      <option value=11>Diciembre</option>
+                  </select>
+          
+          
+                  <label for="year"></label>
+                  <select class="form-control col-sm-4 mb-3" name="year" id="year" onchange="jump()">
+          
+                    <option value=2020>2020</option>
+                    <option value=2021>2021</option>
+                    <option value=2022>2022</option>
+                    <option value=2023>2023</option>
+                    <option value=2024>2024</option>
+                    <option value=2025>2025</option>
+                    <option value=2026>2026</option>
+                    <option value=2027>2027</option>
+                    <option value=2028>2028</option>
+                    <option value=2029>2029</option>
+                    <option value=2030>2030</option>
+                    <option value=2031>2031</option>
+                    <option value=2032>2032</option>
+                    <option value=2033>2033</option>
+                    <option value=2034>2034</option>
+                    <option value=2035>2035</option>
+                    <option value=2036>2036</option>
+                    <option value=2037>2037</option>
+                    <option value=2038>2038</option>
+                    <option value=2039>2039</option>
+                    <option value=2040>2040</option>
+                    
+                  </select>
+                </form>
+
+                <table class="table table-bordered table-responsive-sm" id="calendar">
+                  <thead>
+                    <tr>
+                      <th>Dom</th>
+                      <th>Lun</th>
+                      <th>Mar</th>
+                      <th>Mie</th>
+                      <th>Jue</th>
+                      <th>Vie</th>
+                      <th>Sab</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calendar-body"></tbody>
+                </table>
+          
+                <div class="form-inline mb-3 mx-4 text-center">
+                    <button class="btn btn-outline-primary col-sm-5 ml-4 mr-2" onclick="previous()" style="margin-bottom: 10px;">Anterior</button>
+                    <button class="btn btn-outline-primary col-sm-5 ml-4 mr-2" onclick="next()" style="margin-bottom: 10px;">Siguiente</button>
+                </div>
+                
+              </div>
+
+              <form ref="form" name="form1" :class="['mx-auto']">
+              
+              <div class="form-row">                    
+                    <h5 style="font-weight: bold; margin: 3% 0;">Detalles de la reserva:</h5>
+              </div>
+             
+              <div style="display: block; margin: 15px auto;">
+                <div>
+                  <label for="">Duración de la Reserva: </label>
+                </div>
+                <select id="duration"> 
+                  <!-- Puede ser v-bind:value="option.value" -->
+                  <option value="30">30 Minutos</option>
+                  <option value="60">1 Hora</option>
+                  <option value="90">1 Hora y 30 Minutos</option>
+                  <option value="120">2 Horas</option>
+                </select>
+              </div>
+              <!-- <button :class="['btn', 'btn-dark', 'reserva', 'px-3']" onclick="horaInicio()" id="bot">HORA →</button> -->
+              <div class="form-row">            
+                  <div class="form-group col-md-6">
+                    <label for="">Fecha de Inicio: </label>
+                    <input id="fechaIni" class="form-control" type="date" required>
+                  </div>
+              </div>
+
+              <div class="form-row">
+                  <div class="form-group col-md-6" hidden>
+                    <label for="">Fecha de Fin: </label>
+                    <input id="fechaFin" class="form-control" type="date"> 
+                    <!-- <button @click="valueFin">value</button> -->
+                  </div>
+                  
+                  <div class="form-group col-md-6">
+                    <label for="" style="display: block;">Hora de Inicio: </label>
+                    <input id="horaIni" min="07:00" max="19:00" onchange="horaInicio()" type="time">
+                    <span class="validity"></span>
+                    <!--<button @click="value">value</button>-->
+
+                  </div>    
+
+                  <div class="form-group col-md-6" hidden>
+                    <label for="" style="display: block;">Hora de Fin: </label>
+                    <input id="horaFin" min="07:00" max="19:00" onchange="horaInicio()" type="time">
+                    <span class="validity"></span>
+                    <!-- <button @click="valueFin">value</button> -->
+                  </div>
+                  <!-- <button @click="availability">value</button> -->
+
+              </div>
+              <div style="display: block; margin: 15px auto;">
+                <label for="">Nombre de Usuario: </label>
+                <div>
+                  <input type="text"
+                  required
+                  id="usr"
+                  placeholder="Nombre del usuario"
+                  @keyup.enter="valueUsr"
+                  value="{{this.name}}"
+                  readonly
+                >
+                
+                </div>
+                
+              </div>
+
+              <div class="form-row" style="display: block; margin: 15px auto;">
+                <label for="">Nombre de la Reserva: </label>
+                <div>
+                  <input type="text"
+                  required
+                  id="reserva"
+                  placeholder="Asunto"
+                  @keyup.enter="valueAsunto"
+                >
+                </div>
+                
+              </div>
+              
+              <div class="form-row" style="display: block; margin: 15px auto;">
+                <div>
+                  <label for="">Descripción: </label>  
+                </div>
+                
+                <div>  
+                
+                  <!-- Declare an input group -->
+                      <input type="text"  id="descripcion" placeholder="Email"  @keyup.enter="valueDescription" value="{{this.email}}" required readonly>  
+                  </div>  
+              </div>
+              <div class="form-row" style="display: block; margin: 15px auto;">
+                <div>
+                  <label for="">Número de Sala: </label>
+                </div>
+                
+                <div>
+                   <!-- @keyup.enter="valueRoom" -->
+                  <select id="room" v-model="selected"> 
+                    <!-- -->
+                    <!-- Puede ser v-bind:value="option.value" -->
+                    {{!-- <option v-for="option in options" :value="option.value">
+                      Sala {{ option.text }}
+                    </option> --}}
+                    <option value="92">Sala 1</option>
+                    <option value="93">Sala 2</option>
+                    <option value="94">Sala 3</option>
+                    <option value="95">Sala 4</option>
+                    <option value="96">Sala 5</option>
+                    <option value="97">Sala 6</option>
+                  </select>
+                </div>
+              
+              </div>
+              
+              <div class="form-row" style="display: block; margin: 15px auto;">
+                  <div>
+                    <label for="">Número de Personas: </label>
+                  </div>
+                  
+                  <span class="number-wrapper number-input" style="display: flex;"> 
+                    {{!-- <a onclick="this.parentNode.querySelector('input[type=number]').stepDown()" id="minus" ></a> --}}
+                    <input type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" id="minus" class="operation btn btn-light" value="-">
+                    <input class="mx-auto" type="number" id="person" min="1" max="8" value="1">
+                    {{!-- <input class="quantity" min="1" name="quantity" value="1" type="number"> --}}
+                    {{!-- <a onclick="this.parentNode.querySelector('input[type=number]').stepUp()" id="plus" class="plus"></a> --}}
+                    <input type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" id="plus" class="operation btn btn-light" value="+">
+
+                  </span>
+                </div>
+
+              </div>
+
+              
+
+              <button :class="['btn', 'btn-blue', 'reserva', 'px-3']" @click.prevent="requestData" id="bot">RESERVAR →</button>
+              
+                <!-- <button :class="['btn', 'btn-dark', 'reserva', 'px-3']" @click.prevent="availability">DISPONIBILIDAD →</button> -->
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal" id="exampleModal" tabindex="-1" data-keyboard="false"  data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Disponibilidad </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearTimeTable()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-auto">
+            
+            <table class="table table-bordered table-responsive text-center">
+              <thead>
+                <th>Hora</th>
+                <th>Sala 1</th>
+                <th>Sala 2</th>
+                <th>Sala 3</th>
+                <th>Sala 4</th>
+                <th>Sala 5</th>     
+                <th>Sala 6</th>                
+              </thead>
+              <tbody id="timeTableBody">
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearTimeTable()">Close</button>    
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="noReservaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div id="modal-header" class="modal-header" >
+            <h5 class="modal-title" id="exampleModalLabel">Reserva</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="modal-content" class="modal-body text-center">
+            <!-- YA SE HA REALIZADO UNA RESERVA DIARIA.
+            <br>
+            POR FAVOR VUELVA A INTENTAR EL PRÓXIMO DÍA. -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="no_reserva" class="btn btn-primary" data-toggle="modal" data-target="#noReservaModal" hidden>
+      No se puede reservas
+    </button>
+  </div>
+</body>
+<script>
+
+  function horaInicio() {
+    
+    let finalCampo=document.getElementById('horaIni');  //El siguiente campo de hora contendrá la hora ingresada en la hora de inicio
+    let finCampo=document.getElementById('horaFin');
+    let inicioYMD=finalCampo.value;  //Muestra el value del campo de hora
+    let horaVal=document.getElementById('duration').value;  //Se obtiene el valor ingresado en el input de No. de semanas
+    finalCampo.step = "0";
+    finCampo.step = "0";
+
+    finalCampo.stepUp(horaVal);  //A la hora obtenida para el siguiente campo se le va incrementando la duración(30min, 60min, 90min, 120min).
+    finalCampo.step = "1800";
+    finCampo.step = "1800";
+    document.getElementById("horaFin").value= finalCampo.value; //El valor de la fechaFinal será el valor de la fechaInicio, e irá incrementando de a 7.
+    document.getElementById("horaIni").value= inicioYMD;  //El valor de la fechaInicio permanecerá sin cambios
+}
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/formulario.js"></script>
+<script src="js/calendar.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+</html>

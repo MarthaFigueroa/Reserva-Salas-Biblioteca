@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Login</title>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script>-->
+    <!-- <script type="text/javascript" src=" https://apis.google.com/js/client.js?onload=onLoadCallback"></script> -->
+    {{!-- <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> --}}
+   <!-- <link rel="shortcut icon" href="#" />-->
+	<link rel="icon" href="data:,">
+    {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
+    {{!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --}}
+    <link rel="stylesheet" href="./css/styles.css">
+	{{!-- <meta name="google-signin-client_id" content="795346938454-rsfqcpk7ohml50slc86n4lctgiv1cmrn.apps.googleusercontent.com">  --}}
+</head>
+<body class="login my-auto">
+
+	<div class="d-flex" style="justify-content: center; align-items: center;" id="app">
+
+		<div class="card container text-center px-0 py-0" style="margin: 15vh 0;">
+			<div class="row">
+				<div class="col-md-4 order-md-1 order-lg-4">
+					<div class="w-100 blue d-flex p-5 text-center" style="justify-content: center; align-items: center; height: 100%;">
+						<div>
+							<h2 class="color text-center mb-4 py-3">
+								<span class="fa fa-sing-in"></span> ¡BIENVENIDO AL SISTEMA DE RESERVA!
+							</h2>
+
+							<p class="text-center" style="opacity: 0.5;">
+								Inicia sesión con tu correo y Contraseña de Usuario.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-8 mt-4 pb-3 pl-5">
+					
+					<div class="imgcontainer mb-4">
+						<img src="./img/UNEAT.jpg" alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
+					</div>
+
+					<p class="text-center" style="opacity: 0.5;">
+						Para iniciar sesión se debe de validar el nombre de usuario y Contraseña para permitir realizar reservas en alguna sala de Biblioteca.
+					</p>
+
+					{{!-- <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div> --}}
+                    <a href="#" id="customBtn" onclick="saveToken()" class="btn center customGPlusSignIn btn-login">
+                        <span class="icon"></span>
+                        <span class="buttonText">Iniciar Sesión</span>
+                    </a>
+				</div>
+				
+			</div>
+		</div>
+	</div>	
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/formulario.js"></script>
+<script>
+	
+    function saveToken(){
+        console.log("entrando");
+        //IP
+        var url = "https://bibliotecareservas.uneatlantico.es/links/autenticar";
+       
+       fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ usuario: "asfo", contrasena: "holamundo" }),
+        headers: {
+            
+            "Content-Type": "application/json"
+            // "access-token": token
+        },
+        mode: 'cors',
+        cache: 'no-cache'  
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then((data) => {
+            var token = data['token']
+            console.log(token);
+            sessionStorage.setItem("token",token);
+            window.location.href = '/auth/google';
+            //this.requestData(token);
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+      }
+    
+</script>
+</html>
